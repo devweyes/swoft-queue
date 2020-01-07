@@ -1,6 +1,6 @@
 <?php
 
-namespace Jcsp\WsCluster\Aspect;
+namespace Jcsp\Queue\Aspect;
 
 use Swoft\Aop\Annotation\Mapping\After;
 use Swoft\Aop\Annotation\Mapping\AfterReturning;

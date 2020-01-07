@@ -25,7 +25,7 @@ class ProducterParser extends Parser
      */
     public function parse(int $type, $annotationObject): array
     {
-
+        d($annotationObject);
         return [];
     }
 }

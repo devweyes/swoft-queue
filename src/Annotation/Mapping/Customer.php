@@ -3,6 +3,9 @@
 namespace Jcsp\Queue\Annotation\Mapping;
 
 use Doctrine\Common\Annotations\Annotation\Required;
+use Doctrine\Common\Annotations\Annotation\Attribute;
+use Doctrine\Common\Annotations\Annotation\Attributes;
+use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * Class Customer

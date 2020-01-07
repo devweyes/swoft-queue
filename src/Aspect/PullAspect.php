@@ -1,6 +1,6 @@
 <?php
 
-namespace Jcsp\WsCluster\Aspect;
+namespace Jcsp\Queue\Aspect;
 
 use Jcsp\Queue\Contract\ProcessInterface;
 use Jcsp\Queue\Contract\UserProcess;
@@ -23,7 +23,7 @@ use Swoole\Coroutine;
 use Swoole\Process\Pool;
 
 /**
- * Class ClusterAspect
+ * Class PullAspect
  *
  * @since 2.0
  *
@@ -55,22 +55,20 @@ class PullAspect
         $args = $proceedingJoinPoint->getArgs();
         $target = $proceedingJoinPoint->getTarget();
 
-        $config = QueueConfigRegister::register($this->className, $this->methodName);
+        $result = $proceedingJoinPoint->proceed();
+        // After around
+        $config = QueueConfigRegister::get($className, $methodName);
         if (!empty($config)) {
             while (true) {
                 if ($target instanceof ProcessInterface) {
                     $this->processReceive($target, $config['queue'], ...$args);
                 }
                 if ($target instanceof UserProcess) {
-                    $this->userReceive($target, $config['queue'], ...$args);
+                    $this->userReceive($target, $target->queue ?: $config['queue'], ...$args);
                 }
                 Coroutine::sleep($this->sleep);
             }
         }
-
-
-        $result = $proceedingJoinPoint->proceed();
-        // After around
         return $result;
     }
 

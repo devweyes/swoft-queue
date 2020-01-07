@@ -3,6 +3,7 @@
 namespace Jcsp\Queue\Driver;
 
 use Jcsp\Queue\Contract\QueueInterface;
+use Jcsp\Queue\Result;
 use Swoft\Redis\Pool;
 use Swoft\Serialize\Contract\SerializerInterface;
 use Swoft\Serialize\PhpSerializer;
@@ -37,16 +38,25 @@ class RedisQueue implements QueueInterface
      */
     private $retry = 3;
 
+    /**
+     * @param callable $callback
+     * @param callable|null $fallback
+     */
     public function receive(callable $callback, callable $fallback = null): void
     {
+        Coroutine::sleep(rand(0, $this->waite));
         while (true) {
             $value = $this->pop();
+            d('pop', $this->getQueue(), $value);
             if ($value) {
                 $count = 0;
                 while ($count <= $this->retry) {
                     try {
-                        $callback($value);
-                        break;
+                        $result = $callback($value);
+                        if ($result === Result::ACK || $result === Result::DROP) {
+                            break;
+                        }
+                        $this->push($value);
                     } catch (\Throwable $exception) {
                         if ($count >= $this->retry) {
                             $this->push($value);
@@ -59,37 +69,52 @@ class RedisQueue implements QueueInterface
                 }
             }
             if (!$value) {
-                Coroutine($this->waite);
+                Coroutine::sleep($this->waite);
             }
         }
     }
 
+    /**
+     * @param $message
+     */
     public function push($message): void
     {
         $value = $this->getSerializer()->serialize($message);
         $this->redis->lPush($this->getQueue(), $value);
     }
 
+    /**
+     * @return string
+     */
     public function pop(): string
     {
+        //$this->redis->eval(LuaScripts::pop(),[$this->getQueue(),$this->getQueue().':fall'],2);
         $value = $this->redis->rPop($this->getQueue());
         return $this->getSerializer()->unserialize($value);
     }
 
+    /**
+     *
+     */
     public function release(): void
     {
         // TODO: Implement release() method.
     }
 
     /**
-     * @return string
+     * @return int
      */
-    protected function getQueue()
+    public function len(): int
     {
-        return $this->prefix . $this->defult;
+        return $this->redis->lLen($this->getQueue());
     }
 
-    public function bind(string $queue, array $option = []): self
+    /**
+     * @param string $queue
+     * @param array $option
+     * @return RedisQueue
+     */
+    public function bind(string $queue, array $option = []): QueueInterface
     {
         $this->defult = $queue;
         return $this;
@@ -105,5 +130,13 @@ class RedisQueue implements QueueInterface
         }
 
         return $this->serializer;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getQueue()
+    {
+        return $this->prefix . $this->defult;
     }
 }

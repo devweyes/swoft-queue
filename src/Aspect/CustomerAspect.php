@@ -1,6 +1,6 @@
 <?php
 
-namespace Jcsp\WsCluster\Aspect;
+namespace Jcsp\Queue\Aspect;
 
 use Jcsp\Queue\Contract\ProcessInterface;
 use Jcsp\Queue\Contract\UserProcess;
@@ -21,7 +21,7 @@ use Swoole\Coroutine;
 use Swoole\Process\Pool;
 
 /**
- * Class ClusterAspect
+ * Class CustomerAspect
  *
  * @since 2.0
  *
