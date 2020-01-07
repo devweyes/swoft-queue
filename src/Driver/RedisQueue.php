@@ -1,6 +1,6 @@
 <?php
 
-namespace Jcsp\Queue\Queue;
+namespace Jcsp\Queue\Driver;
 
 use Jcsp\Queue\Contract\QueueInterface;
 use Swoft\Redis\Pool;
