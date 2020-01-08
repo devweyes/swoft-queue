@@ -115,6 +115,7 @@ class RedisQueue implements QueueInterface
      */
     public function bind(string $queue, array $option = []): QueueInterface
     {
+    	
         $this->defult = $queue;
         return $this;
     }
