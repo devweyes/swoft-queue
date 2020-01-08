@@ -44,10 +44,9 @@ class RedisQueue implements QueueInterface
      */
     public function receive(callable $callback, callable $fallback = null): void
     {
-        Coroutine::sleep(rand(0, $this->waite));
+        Coroutine::sleep(rand(1, $this->waite));
         while (true) {
             $value = $this->pop();
-            d('pop', $this->getQueue(), $value);
             if ($value) {
                 $count = 0;
                 while ($count <= $this->retry) {
@@ -123,7 +122,7 @@ class RedisQueue implements QueueInterface
     /**
      * @return SerializerInterface
      */
-    public function getSerializer(): SerializerInterface
+    protected function getSerializer(): SerializerInterface
     {
         if (!$this->serializer) {
             $this->serializer = new PhpSerializer();

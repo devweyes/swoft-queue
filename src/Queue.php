@@ -2,8 +2,19 @@
 
 namespace Jcsp\Queue;
 
+use Jcsp\Queue\Contract\QueueInterface;
 use Swoft\Bean\BeanFactory;
 
+/**
+ * Class Queue
+ * @package Jcsp\Queue
+ * @method static void receive(callable $callback, callable $fallback = null)
+ * @method static void push($message)
+ * @method static string pop()
+ * @method static void release()
+ * @method static int len()
+ * @method static QueueInterface bind(string $queue, array $option = [])
+ */
 class Queue
 {
     public const MANAGER = 'queue.manager';
