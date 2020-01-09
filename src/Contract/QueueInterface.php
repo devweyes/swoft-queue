@@ -18,7 +18,7 @@ interface QueueInterface
     /**
      * @return string
      */
-    public function pop(): string;
+    public function pop();
 
     /**
      * release

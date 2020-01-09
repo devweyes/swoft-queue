@@ -85,7 +85,7 @@ class RedisQueue implements QueueInterface
     /**
      * @return string
      */
-    public function pop(): string
+    public function pop()
     {
         //$this->redis->eval(LuaScripts::pop(),[$this->getQueue(),$this->getQueue().':fall'],2);
         $value = $this->redis->rPop($this->getQueue());
