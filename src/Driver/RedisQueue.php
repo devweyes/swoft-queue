@@ -55,15 +55,14 @@ class RedisQueue implements QueueInterface
                         if ($result === Result::ACK || $result === Result::DROP) {
                             break;
                         }
-                        $this->push($value);
                     } catch (\Throwable $exception) {
                         if ($count >= $this->retry) {
-                            $this->push($value);
+                           $this->pushFall($value);
                         }
-                        $count++;
                         if ($fallback) {
                             $fallback($exception, $count);
                         }
+                        $count++;
                     }
                 }
             }
@@ -81,7 +80,14 @@ class RedisQueue implements QueueInterface
         $value = $this->getSerializer()->serialize($message);
         $this->redis->lPush($this->getQueue(), $value);
     }
-
+    /**
+     * @param $message
+     */
+    public function pushFall($message): void
+    {
+        $value = $this->getSerializer()->serialize($message);
+        $this->redis->lPush($this->getQueue().':fall', $value);
+    }
     /**
      * @return string
      */

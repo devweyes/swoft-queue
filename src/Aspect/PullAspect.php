@@ -81,9 +81,9 @@ class PullAspect
     public function processReceive(&$target, string $queue, Pool $pool, int $workerId)
     {
         $this->queueManager->bind($queue)->receive(static function ($message) use ($target) {
-            $target->receive($message);
-        }, static function ($exception, $retry) {
-            d($exception, $retry);
+            return $target->receive($message);
+        }, static function ($exception, $retry) use ($target) {
+            $target->fallback($exception, $retry);
         });
     }
 
@@ -95,9 +95,9 @@ class PullAspect
     public function userReceive(&$target, string $queue, Process $process)
     {
         $this->queueManager->bind($queue)->receive(static function ($message) use ($target) {
-            $target->receive($message);
-        }, static function ($exception, $retry) {
-            d($exception, $retry);
+            return $target->receive($message);
+        }, static function ($exception, $retry) use ($target) {
+            $target->fallback($exception, $retry);
         });
     }
 }
