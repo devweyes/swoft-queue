@@ -46,28 +46,28 @@ class RedisQueue implements QueueInterface
     {
         Coroutine::sleep(random_int(1, $this->waite));
         while (true) {
-            $value = $this->pop();
-            if ($value) {
+            $message = $this->pop();
+            if ($message) {
                 $count = 0;
                 while ($count <= $this->retry) {
                     try {
-                        $result = $callback($value);
+                        $result = $callback($message);
                         //确认消费或丢弃
                         if ($result === Result::ACK || $result === Result::DROP) {
                             break 1;
                         }
                     } catch (\Throwable $exception) {
                         if ($fallback) {
-                            $fallback($exception, $count);
+                            $fallback($exception, $message);
                         }
                     }
                     if ($count >= $this->retry) {
-                        $this->pushFall($value);
+                        //$this->pushFall($message);
                     }
                     $count++;
                 }
             }
-            if (!$value) {
+            if (!$message) {
                 Coroutine::sleep($this->waite);
             }
         }
