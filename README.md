@@ -6,6 +6,11 @@
 
 2\. 使用
 ----------------
+### composer
+
+```
+composer require devweyes/queue
+```
 ### 用户进程更多消费者
 
 新增进程数量配置
@@ -91,7 +96,7 @@ class RecvMessageProcess extends UserProcess
     public function fallback(\Throwable $throwable, $message): void
     {
         //
-        vdump('error', $throwable->getMessage(), 'message', $message);
+        vdump('error', $throwable->getMessage(), 'message',$message);
     }
 }
 
