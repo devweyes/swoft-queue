@@ -11,6 +11,34 @@
 ```
 composer require devweyes/queue
 ```
+
+### 主要配置
+
+```php
+<?php
+        return [
+            Queue::MANAGER => [
+                'class' => QueueManager::class,
+                'driver' => bean(Queue::DRIVER),
+                'serverIdPrefix' => 'swoft_ws_server_cluster_'
+            ],
+            Queue::DRIVER => [
+                'class' => RedisQueue::class,
+                'redis' => bean('redis.pool'),
+                'serializer' => bean(Queue::SERIALIZER),
+                'prefix' => 'swoft_queue_',
+                'default' => 'default',
+                'waite' => 10,
+                'retry' => 3
+            ],
+            Queue::SERIALIZER => [
+                'class' => PhpSerializer::class
+            ]
+        ];
+
+```
+
+
 ### 用户进程更多消费者
 
 新增进程数量配置
@@ -31,7 +59,13 @@ use Jcsp\Queue\Helper\Tool;
             )
 ]
 ```
+### 数据手动生产
+```php
+<?php
+use Jcsp\Queue\Queue;
 
+Queue::bind('queue')->push('this is message');
+```
 
 ### redis驱动queue消费
 
