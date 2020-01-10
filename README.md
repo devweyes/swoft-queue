@@ -24,7 +24,7 @@ use Jcsp\Queue\Helper\Tool;
                   //自定义进程
                 ]
             )
-];
+]
 ...
 
 
@@ -96,3 +96,8 @@ class RecvMessageProcess extends UserProcess
 }
 
 ```
+
+### rabbitmq驱动queue消费
+
+
+In development
