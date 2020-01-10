@@ -1,33 +1,30 @@
 {
-  "name": "devweyes/queue",
-  "description": "queue for swoft",
-  "license": "Apache-2.0",
-  "keywords": [
-    "queue",
-    "swoft",
-    "redis",
-    "rabbitmq"
-  ],
-  "autoload": {
-    "psr-4": {
-      "Jcsp\\Queue\\": "src/"
-    }
-  },
-  "require": {
-    "php": ">7.1",
-    "ext-redis": "*",
-    "ext-json": "*",
-    "ext-mbstring": "*",
-    "swoft/redis": "~2.0.0",
-    "swoft/serialize": "~2.0.0",
-    "swoft/stdlib": "~2.0.0",
-    "swoft/bean": "~2.0.0",
-    "swoft/amqp": "~2.0.0"
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://mirrors.aliyun.com/composer/"
-    }
-  ]
+    "name": "devweyes/queue",
+    "description": "queue for swoft",
+    "license": "Apache-2.0",
+    "keywords": [
+        "queue",
+        "swoft",
+        "redis",
+        "rabbitmq"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Jcsp\\Queue\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">7.1",
+        "ext-redis": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "swoft/redis": "~2.0.0",
+        "swoft/serialize": "~2.0.0",
+        "swoft/stdlib": "~2.0.0",
+        "swoft/bean": "~2.0.0"
+    },
+    "repositories": [{
+        "type": "composer",
+        "url": "https://mirrors.aliyun.com/composer/"
+    }]
 }
