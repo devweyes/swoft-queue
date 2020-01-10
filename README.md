@@ -30,7 +30,7 @@ use Jcsp\Queue\Helper\Tool;
 
 ### redis驱动queue消费
 
-- redis内存数据库，队列积压量少时出队入队速度显著，非常适用于实时异步消息传输。否则，请使用rabbitmq或其他作为驱动
+- redis内存数据库，并不可靠但性能及高，数据量小于10K出队入队速度显著，非常适用于实时异步短消息传输。否则，请使用rabbitmq或其他作为驱动
 - 用户进程需继承```Jcsp\Queue\Contract\UserProcess```
 - 进程池需实现```Jcsp\Queue\Contract\ProcessInterface```
 - 进程需包含三个方法 ```run()```, ```receive()```,  ```fallback()```，分别实现 ```入口```，```消费```，```错误处理```逻辑
