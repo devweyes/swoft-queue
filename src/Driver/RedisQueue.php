@@ -44,7 +44,7 @@ class RedisQueue implements QueueInterface
      */
     public function receive(callable $callback, callable $fallback = null): void
     {
-        Coroutine::sleep(rand(1, $this->waite));
+        Coroutine::sleep(random_int(1, $this->waite));
         while (true) {
             $value = $this->pop();
             if ($value) {
@@ -52,18 +52,19 @@ class RedisQueue implements QueueInterface
                 while ($count <= $this->retry) {
                     try {
                         $result = $callback($value);
+                        //确认消费或丢弃
                         if ($result === Result::ACK || $result === Result::DROP) {
-                            break;
+                            break 1;
                         }
                     } catch (\Throwable $exception) {
-                        if ($count >= $this->retry) {
-                           $this->pushFall($value);
-                        }
                         if ($fallback) {
                             $fallback($exception, $count);
                         }
-                        $count++;
                     }
+                    if ($count >= $this->retry) {
+                        $this->pushFall($value);
+                    }
+                    $count++;
                 }
             }
             if (!$value) {
@@ -121,7 +122,6 @@ class RedisQueue implements QueueInterface
      */
     public function bind(string $queue, array $option = []): QueueInterface
     {
-
         $this->defult = $queue;
         return $this;
     }
