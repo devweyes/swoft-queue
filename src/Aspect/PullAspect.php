@@ -78,7 +78,7 @@ class PullAspect
      * @param Pool $pool
      * @param int $workerId
      */
-    public function processReceive(&$target, string $queue, Pool $pool, int $workerId)
+    public function processReceive(&$target, string $queue, Pool $pool, int $workerId): void
     {
         $this->queueManager->bind($queue)->receive(static function ($message) use ($target) {
             return $target->receive($message);
@@ -92,7 +92,7 @@ class PullAspect
      * @param $target
      * @param Process $process
      */
-    public function userReceive(&$target, string $queue, Process $process)
+    public function userReceive(&$target, string $queue, Process $process): void
     {
         $this->queueManager->bind($queue)->receive(static function ($message) use ($target) {
             return $target->receive($message);
