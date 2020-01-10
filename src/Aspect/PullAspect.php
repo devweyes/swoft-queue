@@ -82,8 +82,8 @@ class PullAspect
     {
         $this->queueManager->bind($queue)->receive(static function ($message) use ($target) {
             return $target->receive($message);
-        }, static function ($exception, $retry) use ($target) {
-            $target->fallback($exception, $retry);
+        }, static function ($exception, $message) use ($target) {
+            $target->fallback($exception, $message);
         });
     }
 
@@ -96,8 +96,8 @@ class PullAspect
     {
         $this->queueManager->bind($queue)->receive(static function ($message) use ($target) {
             return $target->receive($message);
-        }, static function ($exception, $retry) use ($target) {
-            $target->fallback($exception, $retry);
+        }, static function ($exception, $message) use ($target) {
+            $target->fallback($exception, $message);
         });
     }
 }

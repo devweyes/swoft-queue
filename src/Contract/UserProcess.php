@@ -28,7 +28,7 @@ abstract class UserProcess extends \Swoft\Process\UserProcess
      * @param $message
      * @return string
      */
-    public function fallback(\Throwable $throwable, int $retry): void
+    public function fallback(\Throwable $throwable, $message): void
     {
         //fallback
     }
