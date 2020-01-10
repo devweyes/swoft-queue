@@ -91,7 +91,7 @@ class RecvMessageProcess extends UserProcess
     public function fallback(\Throwable $throwable, $message): void
     {
         //
-        vdump('error', $throwable->getMessage(), 'message',$message);
+        vdump('error', $throwable->getMessage(), 'message', $message);
     }
 }
 
