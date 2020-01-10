@@ -25,7 +25,7 @@ use Jcsp\Queue\Helper\Tool;
                 ]
             )
 ]
-...
+```
 
 
 ### redis驱动queue消费
